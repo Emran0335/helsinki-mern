@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const Note = require("./model/note");
-console.log(Note)
+
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
