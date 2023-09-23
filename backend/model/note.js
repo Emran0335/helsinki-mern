@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
-mongoose.set('strictQuery', false)
+mongoose.set("strictQuery", false);
+const url = process.env.MONGO_DB_URI;
+console.log("connected", url);
 
-console.log('connected', process.env.MONGO_DB_URI)
 mongoose
-  .connect(process.env.MONGO_DB_URI)
+  .connect(url)
   .then((result) => {
     console.log("connected to MongoDB");
   })
@@ -12,19 +13,18 @@ mongoose
     console.log("error connectiong to MongoDB:", error.message);
   });
 
-
-
 const noteSchema = new mongoose.Schema({
   content: String,
   important: Boolean,
+  date: String,
 });
 
-noteSchema.set('toJSON', {
-    transform: (document, returnedObject)=> {
-        returnedObject.id = returnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
-})
+noteSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
 
-module.exports = mongoose.model('Note', noteSchema);
+module.exports = mongoose.model("Note", noteSchema);
