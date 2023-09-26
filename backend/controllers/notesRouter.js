@@ -42,8 +42,7 @@ router.delete("/:id", (request, response) => {
     .then(() => {
       response.status(204).end();
     })
-    // .catch(error => next(error))
-    .catch((error) => console.log(error));
+    .catch(error => next(error))
 });
 
 router.put("/:id", (request, response) => {

@@ -13,7 +13,7 @@ logger.info("connecting to", config.MONGO_DB_URI);
 mongoose
   .connect(config.MONGO_DB_URI)
   .then((result) => {
-    logger.info("connected to MongoDB");
+    logger.info(`connected to MongoDB`.cyan.underline);
   })
   .catch((error) => {
     logger.error("error connectiong to MongoDB:", error.message);

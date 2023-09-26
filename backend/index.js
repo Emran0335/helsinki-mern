@@ -1,7 +1,7 @@
-const express = require("express");
 const app = require('./app')
 const logger = require('./utils/logger')
 const config = require('./utils/config')
+const colors = require('colors')
 
 
 const PORT = config.PORT;
