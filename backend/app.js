@@ -5,6 +5,7 @@ const cors = require("cors");
 const logger = require("./utils/logger");
 const middleware = require("./utils/middlewares");
 const notesRouter = require("./controllers/notesRouter");
+const usersRouter = require("./controllers/usersRouter");
 const config = require('./utils/config');
 
 mongoose.set("strictQuery", false);
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 
 app.use("/api/notes", notesRouter);
+app.use("/api/users", usersRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
