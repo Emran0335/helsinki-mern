@@ -3,6 +3,11 @@ import axios from "axios";
 // url
 const baseUrl = "http://localhost:8000/api/notes";
 
+// set token so that we can get data and update UI
+let token = null;
+const setToken = (newToken) => {
+  token = `Bearer ${newToken}`;
+};
 // get all notes
 const getAll = () => {
   const request = axios.get(baseUrl);
@@ -11,8 +16,11 @@ const getAll = () => {
 
 // create new note
 const create = (newObject) => {
-  const request = axios.post(baseUrl, newObject);
-  return request.then((response) => (response.data));
+  const config = {
+    headers: { Authorization: token },
+  };
+  const request = axios.post(baseUrl, newObject, config);
+  return request.then((response) => response.data);
 };
 
 // update a note
@@ -25,4 +33,5 @@ export default {
   getAll: getAll,
   create: create,
   update: update,
+  setToken: setToken,
 };

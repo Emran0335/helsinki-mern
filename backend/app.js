@@ -4,10 +4,12 @@ const app = express();
 const cors = require("cors");
 const logger = require("./utils/logger");
 const middleware = require("./utils/middlewares");
+const config = require("./utils/config");
+
+// routers
 const notesRouter = require("./controllers/notesRouter");
 const usersRouter = require("./controllers/usersRouter");
 const loginRouter = require("./controllers/loginRouter");
-const config = require('./utils/config');
 
 mongoose.set("strictQuery", false);
 logger.info("connecting to", config.MONGO_DB_URI);
