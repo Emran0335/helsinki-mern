@@ -78,7 +78,19 @@ const App = () => {
       )}
       {user && (
         <div>
-          <p>{user.username} logged in</p>
+          <p>
+            <span
+              style={{
+                fontSize: "32px",
+                color: "green",
+                textTransform: "uppercase",
+                marginRight: "8px",
+              }}
+            >
+              {user.username}
+            </span>
+            logged in
+          </p>
           <NoteForm
             addNote={addNote}
             newNote={newNote}
