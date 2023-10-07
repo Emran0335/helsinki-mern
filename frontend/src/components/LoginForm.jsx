@@ -1,65 +1,41 @@
-import React, { useEffect, useState } from "react";
-import loginService from "../services/login";
-import noteService from "../services/notes";
+import PropTypes from "prop-types";
 
-const LoginForm = ({ setErrorMessage, user, setUser }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser");
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      noteService.setToken(user?.token);
-    }
-  }, [setUser]);
-  // login details
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const newUser = await loginService.login({
-        username,
-        password,
-      });
-      window.localStorage.setItem("loggedNoteappUser", JSON.stringify(newUser));
-      noteService.setToken(newUser.token);
-      setUser(newUser);
-      setUsername("");
-      setPassword("");
-    } catch (error) {
-      setErrorMessage("Wrong credentials");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
-    }
-  };
-
+const LoginForm = ({
+  handleSubmit,
+  handleUsernameChange,
+  handlePasswordChange,
+  username,
+  password,
+}) => {
   return (
-    <>
-      <form onSubmit={handleLogin}>
+    <div>
+      <h2>Login</h2>
+
+      <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="#">username</label>
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
+          username
+          <input value={username} onChange={handleUsernameChange} />
         </div>
         <div>
-          <label htmlFor="#">password</label>
+          password
           <input
-            type="text"
+            type="password"
             value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
+            onChange={handlePasswordChange}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit">login</button>
       </form>
-    </>
+    </div>
   );
+};
+
+LoginForm.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleUsernameChange: PropTypes.func.isRequired,
+  handlePasswordChange: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
 };
 
 export default LoginForm;
