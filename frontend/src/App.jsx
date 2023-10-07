@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import Note from "./components/Note";
 import Notification from "./components/Notification";
+import LoginForm from "./components/LoginForm";
+import NoteForm from "./components/NoteForm";
 import Footer from "./components/Footer";
 import noteService from "./services/notes";
 import loginService from "./services/login";
@@ -13,7 +15,7 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  console.log(user);
+
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
       setNotes(initialNotes);
@@ -61,72 +63,27 @@ const App = () => {
       });
   };
 
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value);
-  };
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      const user = await loginService.login({ username, password });
-      console.log(user);
-      window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
-      noteService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (error) {
-      setErrorMessage("Wrong credentials");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
-    }
-  };
-
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  );
-
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
-      <button type="submit">save</button>
-    </form>
-  );
-
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
 
   return (
     <div>
       <h1>Notes</h1>
-
       <Notification message={errorMessage} />
-
-      {!user && loginForm()}
+      {!user && (
+        <LoginForm
+          setErrorMessage={setErrorMessage}
+          user={user}
+          setUser={setUser}
+        />
+      )}
       {user && (
         <div>
           <p>{user.username} logged in</p>
-          {noteForm()}
+          <NoteForm
+            addNote={addNote}
+            newNote={newNote}
+            setNewNote={setNewNote}
+          />
         </div>
       )}
 
@@ -144,7 +101,6 @@ const App = () => {
           />
         ))}
       </ul>
-
       <Footer />
     </div>
   );
